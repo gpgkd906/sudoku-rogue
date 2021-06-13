@@ -2,8 +2,8 @@
   <p>
     <span> Score : </span><span>{{ player.score }}</span>
   </p>
-  <div class="grid grid-cols-2 aoto-col-max">
-    <div class="w-24"
+  <div class="grid grid-cols-2">
+    <div class="w-full h-10 flex items-center justify-center"
       v-for="item in player.items" :key="item">
       {{item}}
     </div>
@@ -17,7 +17,6 @@ import unit from "../store/unit";
 export default defineComponent({
   name: 'Player',
   setup: () => {
-    console.log(unit.player)
     return { 
       player: unit.player,
      }
