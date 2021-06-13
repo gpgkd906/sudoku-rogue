@@ -1,9 +1,9 @@
 <template>
-  <div :class="item.confirmed ? 'bg-green-200': ''" 
+  <div :class="bgColor()" 
   class="w-full h-full text-xl font-extrabold flex items-center justify-center"
   @click="selectCell"
   >
-  {{item.guess}}
+  <span :class="item.highlight ? 'text-red-500': ''">{{item.guess}}</span>
   </div>
 </template>
 
@@ -26,7 +26,13 @@ export default defineComponent({
   },
   setup (props) {
     return {
-      selectCell: () => game.selectCell(props.index)
+      bgColor: () => {
+        let bgColor = '';
+        bgColor = props.item.confirmed ? 'bg-green-200': bgColor;
+        bgColor = props.item.highlight ? 'bg-red-200': bgColor;
+        return bgColor;
+      },
+      selectCell: () => game.selectCell(props.index),
     }
   }
 })

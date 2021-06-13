@@ -18,7 +18,16 @@
     <button  @click="cancelBack()"
       class="inline-flex justify-center px-4 py-2 text-sm font-medium text-purple-900 bg-purple-100 rounded-md hover:bg-purple-200 focus:outline-none"
       >取消回退</button>
-  </div>  
+  </div>
+  <div class="grid grid-cols-3 gap-4">
+      <div v-for="number in selectable" :key="number"
+      @click="toggleHighlight(number)"
+      class="bg-purple-300 h-12 rounded-md flex items-center justify-center text-white text-2xl font-extrabold"
+      :class="highlights.includes(number) ? 'ring-2 ring-blue-500': ''"
+      >
+        {{ number }}
+      </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -29,12 +38,15 @@ import game from '../store/game'
 export default defineComponent({
   name: 'Player',
   setup: () => {
-    return { 
+    return {
       player: unit.player,
       startNewGame: game.startNewGame,
       backToLastSnapshot: game.backToLastSnapshot,
       cancelBack: game.cancelBack,
-     }
+      selectable: game.selectable,
+      highlights: game.highlights,
+      toggleHighlight: game.toggleHighlight,
+    }
   }
 })
 </script>

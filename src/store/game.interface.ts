@@ -6,6 +6,7 @@ export interface Cell {
     answer: number,
     confirmed: boolean,
     fixed: boolean,
+    highlight: boolean,
     row: number,
     col: number,
     square: number,
@@ -18,6 +19,7 @@ export interface Game {
     selected: number | void,
     snapshot: Array<Cell[]>,
     undoSnapshot: Array<Cell[]>,
+    highlights: number[],
 }
 
 export interface State {

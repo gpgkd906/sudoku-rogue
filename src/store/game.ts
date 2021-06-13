@@ -20,6 +20,7 @@ const toMatrix = (puzzle: MayBeNumber[], solution: number[]): Cell[] => {
             answer: solution[idx],
             confirmed: solution[idx] === puzzle[idx],
             fixed: solution[idx] === puzzle[idx],
+            highlight: false,
             row,
             col,
             square: decideSquare(row, col),
@@ -30,6 +31,7 @@ const toMatrix = (puzzle: MayBeNumber[], solution: number[]): Cell[] => {
 
 export const CURRENT_GAME = 'current'
 export const CLEAR_GUESS  = '清除'
+const SELECTABLE   = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 const createGame = (): Game => {
     const size          = 9
@@ -43,6 +45,7 @@ const createGame = (): Game => {
         snapshot: [],
         undoSnapshot: [],
         matrix: toMatrix(puzzle, solution),
+        highlights: [],
     }
 }
 
@@ -138,7 +141,7 @@ const guessRange = () => {
         }
     }
     included = included.filter(i => i);
-    let range: (number|string)[] = [1, 2, 3, 4, 5, 6, 7, 8, 9].filter(number => !included.includes(number));
+    let range: (number|string)[] = SELECTABLE.filter(number => !included.includes(number));
     if (select.guess) {
         range.push(select.guess);
         range.push(CLEAR_GUESS)
@@ -151,6 +154,34 @@ const guessRange = () => {
     return range;
 }
 
+const addHighlight = (target: number) => {
+    for (const cell of state.current.matrix) {
+        if (cell.guess === target) {
+            cell.highlight = true;
+        }
+    }
+    state.current.highlights.push(target);
+    setCurrentGame(state.current);
+}
+
+const removeHighlight = (target: number) => {
+    for (const cell of state.current.matrix) {
+        if (cell.guess === target) {
+            cell.highlight = false;
+        }
+    }
+    state.current.highlights = state.current.highlights.filter(number => number !== target);
+    setCurrentGame(state.current);
+}
+
+const toggleHighlight = (target: number) => {
+    if (state.current.highlights.includes(target)) {
+        removeHighlight(target);
+    } else {
+        addHighlight(target);
+    }
+}
+
 export default {
     game: readonly(state),
     isSelected: computed(isSelected),
@@ -160,7 +191,10 @@ export default {
     guess,
     backToLastSnapshot,
     cancelBack,
+    toggleHighlight,
     guessRange: computed(guessRange),
-    noChoice: computed(() => state.noChoice)
+    highlights: computed(() => state.current.highlights),
+    noChoice: computed(() => state.noChoice),
+    selectable: SELECTABLE,
 }
 
