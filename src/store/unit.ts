@@ -10,7 +10,11 @@ interface Player {
 
 const state:Player = reactive({
     score: 0,
-    items: [],
+    items: [
+        "初始道具1",
+        "初始道具2",
+        "初始道具3",
+    ],
 });
 
 const addItems = (item: string) => {

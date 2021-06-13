@@ -3,7 +3,7 @@
 //
 // This is a port of David Bau's python  implementation:
 // http://davidbau.com/archives/2006/09/04/sudoku_generator.html
-function makepuzzle(board) {
+function generatepuzzle(board) {
   var puzzle = [];
   var deduced = Array(81).fill(null);
   var order = [...Array(81).keys()];
@@ -37,7 +37,7 @@ function makepuzzle(board) {
   return boardforentries(puzzle);
 }
 
-function ratepuzzle(puzzle, samples) {
+export function ratepuzzle(puzzle, samples) {
   var total = 0;
 
   for (var i = 0; i < samples; i++) {
@@ -78,7 +78,7 @@ function checkpuzzle(puzzle, board) {
   return difficulty;
 }
 
-function solvepuzzle(board) {
+export function solvepuzzle(board) {
   return solveboard(board).answer;
 }
 
@@ -250,7 +250,7 @@ function figurebits(board) {
   };
 }
 
-function posfor(x, y, axis) {
+export function posfor(x, y, axis) {
   if (axis === undefined) {
     axis = 0;
   }
@@ -377,14 +377,8 @@ function removeElement(array, from, to) {
   var rest = array.slice((to || from) + 1 || array.length);
   array.length = from < 0 ? array.length + from : from;
   return array.push.apply(array, rest);
-}
+};
 
-;
-module.exports = {
-  makepuzzle: function () {
-    return makepuzzle(solvepuzzle(Array(81).fill(null)));
-  },
-  solvepuzzle: solvepuzzle,
-  ratepuzzle: ratepuzzle,
-  posfor: posfor
+export function makepuzzle (size = 9) {
+  return generatepuzzle(solvepuzzle(Array(size * size).fill(null)));
 };

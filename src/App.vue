@@ -1,10 +1,10 @@
 <template>
-  <Board/>
+  <Board msg="roguelike 数独"/>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import Board from './components/Board.vue'
+import Board from './views/Board.vue'
 
 export default defineComponent({
   name: 'App',
