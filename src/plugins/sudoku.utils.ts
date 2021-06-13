@@ -21,3 +21,9 @@ export const decideSquare = (row: number, col: number): number => {
         default: return 0;
     }
 }
+
+export const takeSnapshot = <T>(matrix: T[]): T[] => {
+    return matrix.map(item => {
+        return {...item};
+    })
+}

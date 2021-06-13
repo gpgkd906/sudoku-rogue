@@ -19,14 +19,15 @@
             >
               <div class="mt-2">
                 <p class="text-sm text-gray-500">
-                  选择填入的数字
+                  填入数字或清除
                 </p>
               </div>
               <div class="mt-4">
                 <button
                   v-for="number in guessRange" :key="number"
                   type="button"
-                  class="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 rounded-md hover:bg-blue-200 focus:outline-none"
+                  class="inline-flex justify-center px-4 py-2 text-sm font-medium rounded-md focus:outline-none"
+                  :class="number !== '清除' ? 'text-blue-900 bg-blue-100 hover:bg-blue-200': 'text-red-900 bg-red-100 hover:bg-red-200'"
                   @click="guess(number)"
                 >
                   {{ number }}

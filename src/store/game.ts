@@ -2,7 +2,7 @@ import { reactive, readonly, computed, toRaw } from 'vue'
 import { makepuzzle, solvepuzzle, ratepuzzle } from "../plugins/sudoku.js"
 import { MayBeNumber, Cell, Game, State } from "./game.interface"
 import db from "../plugins/db"
-import { decideSquare } from "../plugins/sudoku.utils"
+import { decideSquare, takeSnapshot } from "../plugins/sudoku.utils"
 
 const store = db.createInstance({
     name: "game"
@@ -28,7 +28,8 @@ const toMatrix = (puzzle: MayBeNumber[], solution: number[]): Cell[] => {
     return matrix;
 }
 
-const CURRENT_GAME = 'current';
+export const CURRENT_GAME = 'current'
+export const CLEAR_GUESS  = '清除'
 
 const createGame = (): Game => {
     const size          = 9
@@ -40,17 +41,9 @@ const createGame = (): Game => {
         size,
         selected: undefined,
         snapshot: [],
+        undoSnapshot: [],
         matrix: toMatrix(puzzle, solution),
     }
-}
-
-const takeSnapshot = (game: Game): Game => {
-    game.snapshot.push(
-        game.matrix.map(item => {
-            return {...item};
-        })
-    );
-    return game;
 }
 
 const setCurrentGame = (game: Game) => {
@@ -90,21 +83,40 @@ const selectCell = (key: number) => {
     }
 }
 
-const guess = (guess: number) => {
+const backToLastSnapshot = () => {
+    const last = state.current.snapshot.pop();
+    if (last) {
+        state.current.undoSnapshot.push(takeSnapshot(state.current.matrix));
+        state.current.matrix = last;
+    }
+    setCurrentGame(state.current);
+}
+
+const cancelBack = () => {
+    const last = state.current.undoSnapshot.pop();
+    if (last) {
+        state.current.snapshot.push(takeSnapshot(state.current.matrix));
+        state.current.matrix = last;
+    }
+    setCurrentGame(state.current);
+}
+
+const guess = (guess: MayBeNumber) => {
     const selected = state.current.selected;
     if (!selected) {
         return;
     }
-    state.current = takeSnapshot(state.current);
-    state.current.matrix[selected].guess = guess;
     state.current.selected = undefined;
-    setCurrentGame(state.current);
-}
-
-const backToLastSnapshot = () => {
-    const last = state.current.snapshot.pop();
-    if (last) {
-        state.current.matrix = last;
+    // 同一个单元里选择同一个数字不记录任何操作
+    if (state.current.matrix[selected].guess === guess) {
+        return;
+    }
+    state.current.snapshot.push(takeSnapshot(state.current.matrix));
+    state.current.undoSnapshot = [];
+    if (typeof guess === 'number') {
+        state.current.matrix[selected].guess = guess;
+    } else {
+        state.current.matrix[selected].guess = undefined;
     }
     setCurrentGame(state.current);
 }
@@ -126,9 +138,10 @@ const guessRange = () => {
         }
     }
     included = included.filter(i => i);
-    let range = [1, 2, 3, 4, 5, 6, 7, 8, 9].filter(number => !included.includes(number));
+    let range: (number|string)[] = [1, 2, 3, 4, 5, 6, 7, 8, 9].filter(number => !included.includes(number));
     if (select.guess) {
         range.push(select.guess);
+        range.push(CLEAR_GUESS)
     }
     range = Array.from(new Set(range));
     state.noChoice = false;
@@ -146,6 +159,7 @@ export default {
     clearSelect,
     guess,
     backToLastSnapshot,
+    cancelBack,
     guessRange: computed(guessRange),
     noChoice: computed(() => state.noChoice)
 }

@@ -16,7 +16,8 @@ export interface Game {
     difficulty: number,
     size: number,
     selected: number | void,
-    snapshot: Array<Cell[]>
+    snapshot: Array<Cell[]>,
+    undoSnapshot: Array<Cell[]>,
 }
 
 export interface State {
