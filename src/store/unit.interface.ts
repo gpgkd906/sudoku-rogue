@@ -1,6 +1,6 @@
 export type Item = string;
 
 export interface Unit {
-    score: number,
+    point: number,
     items: Item[]
 }

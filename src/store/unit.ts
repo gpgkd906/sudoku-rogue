@@ -2,7 +2,7 @@ import { reactive, readonly } from 'vue'
 import { Unit } from "./unit.interface"
 
 const player: Unit = reactive({
-    score: 0,
+    point: 0,
     items: [
         "初始道具1",
         "初始道具2",
@@ -14,12 +14,12 @@ const addItems = (item: string) => {
     player.items.push(item);
 }
 
-const addScore = (score: number) => {
-    player.score += score;
+const addPoint = (point: number) => {
+    player.point += point;
 }
 
 export default {
     player: readonly(player),
     addItems: addItems,
-    addScore: addScore,
+    addPoint: addPoint,
 }

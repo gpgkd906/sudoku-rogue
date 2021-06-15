@@ -4,6 +4,7 @@
   @click="selectCell"
   >
   <span :class="item.highlight ? 'text-red-500': ''">{{item.guess}}</span>
+  <small>[{{ item.answer }}]</small>
   </div>
 </template>
 
