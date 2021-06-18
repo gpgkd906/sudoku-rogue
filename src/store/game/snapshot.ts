@@ -1,3 +1,4 @@
+import { computed } from 'vue'
 import { state, setCurrentGame } from "./model";
 
 const takeSnapshot = <T>(matrix: T[]): T[] => {
@@ -28,3 +29,5 @@ export const snapshotThenReset = () => {
     state.current.snapshot.push(takeSnapshot(state.current.matrix));
     state.current.undoSnapshot = [];
 }
+
+export const snapShotCount = computed(() => state.current.snapshot.length);

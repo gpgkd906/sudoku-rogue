@@ -1,6 +1,9 @@
 <template>
   <p>
     <span> Score : </span><span>{{ player.score }}</span>
+    <span> steps : </span><span>{{ snapShotCount }}</span>
+    <span> rest : </span><span>{{ guessNumber }}</span>
+    <span> timer : </span><span>{{ gameTimer }}</span>
   </p>
   <div class="grid grid-cols-2">
     <div class="w-full h- flex items-center justify-center"
@@ -46,6 +49,9 @@ export default defineComponent({
       selectable: game.selectable,
       highlights: game.highlights,
       toggleHighlight: game.toggleHighlight,
+      snapShotCount: game.snapShotCount,
+      guessNumber: game.guessNumber,
+      gameTimer: game.gameTimer
     }
   }
 })

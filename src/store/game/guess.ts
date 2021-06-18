@@ -47,3 +47,5 @@ export const guessRange = computed(() => {
     }
     return range;
 })
+
+export const guessNumber = computed(() => state.current.matrix.filter(i => !i.guess).length)
