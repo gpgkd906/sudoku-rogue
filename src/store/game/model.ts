@@ -52,6 +52,13 @@ const createGame = (): Game => {
         result: {
             confirmed: false,
             success: false,
+            score: {
+                difficulty: 0,
+                time: 0,
+                item: 0,
+                event: 0,
+                total: 0,
+            }
         }
     }
 }
@@ -133,3 +140,4 @@ export const current    = readonly(state.current);
 export const noChoice   = computed(() => state.noChoice);
 export const gameScore  = computed(() => state.current.score);
 export const isCurrentGameConfirmed = computed(() => state.current.result.confirmed);
+export const gameResult = readonly(state.current.result);

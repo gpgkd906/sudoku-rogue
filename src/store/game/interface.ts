@@ -27,7 +27,15 @@ export interface Skill {
 
 export interface Result {
     confirmed: boolean,
-    success: boolean
+    success: boolean,
+    wrongCount?: number,
+    score?: {
+        difficulty: number,
+        time?: number,
+        item?: number,
+        event?: number,
+        total?: number,
+    }
 }
 
 export interface Game {

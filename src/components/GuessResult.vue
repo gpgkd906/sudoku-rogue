@@ -1,54 +1,40 @@
 <template>
-  <TransitionRoot appear :show="false" as="template">
-    <Dialog as="div" :open="true">
-      <div class="fixed inset-0 z-10 overflow-y-auto">
-        <div class="min-h-screen px-4 text-center">
-          <span class="inline-block h-screen align-middle" aria-hidden="true"></span>
-
-          <TransitionChild
-            as="template"
-            enter="duration-300 ease-out"
-            enter-from="opacity-0 scale-95"
-            enter-to="opacity-100 scale-100"
-            leave="duration-0 ease-in"
-            leave-from="opacity-100 scale-100"
-            leave-to="opacity-0 scale-95"
-          >
-            <div
-              class="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-center align-middle transition-all transform bg-white shadow-xl rounded-2xl ring-1 ring-yellow-400 ring-offset-yellow-200 ring-offset-1"
-            >
-              填入数字或清除
-              <button></button>
-            </div>
-          </TransitionChild>
-        </div>
-      </div>
-    </Dialog>
-  </TransitionRoot>
+  <Dialog :isOpen="isOpen">
+    <h1>游戏结算</h1>
+    <ul>
+      <li>难度奖励: {{ result.score.difficulty }}</li>
+      <li>时间奖励: {{ result.score.time }}</li>
+      <li>道具奖励: {{ result.score.item }}</li>
+      <li>额外奖励: {{ result.score.event }}</li>
+      <li class="border-t-2 border-gray-900">结算: {{ result.score.total }}</li>
+    </ul>
+    <button  @click="startNewGame()"
+      class="inline-flex justify-center px-4 py-2 text-sm font-medium text-red-900 bg-red-100 rounded-md hover:bg-red-200 focus:outline-none"
+      >开始新游戏</button>
+    <button  @click="backTop()"
+      class="inline-flex justify-center px-4 py-2 text-sm font-medium text-green-900 bg-green-100 rounded-md hover:bg-green-200 focus:outline-none"
+      >返回游戏入口</button>
+  </Dialog>
 </template>
 
 <script>
-import {
-  TransitionRoot,
-  TransitionChild,
-  Dialog,
-  DialogOverlay,
-  DialogTitle,
-} from '@headlessui/vue'
+import Dialog from './utils/Dialog.vue'
 import game from '../store/game'
+import router, { Paths } from "../router";
 
 export default {
   components: {
-    TransitionRoot,
-    TransitionChild,
     Dialog,
-    DialogOverlay,
-    DialogTitle,
   },
 
   setup() {
     return {
-      isOpen: game.isSelected,
+      isOpen: game.isCurrentGameConfirmed,
+      result: game.gameResult,
+      startNewGame: game.startNewGame,
+      backTop: () => {
+        router.replace(Paths.top);
+      },
     }
   },
 }
