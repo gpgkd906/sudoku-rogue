@@ -1,5 +1,5 @@
 <template>
-  <h1 class="h-12">{{ msg }}</h1>
+  <h1 class="h-12">roguelike 数独</h1>
   <div class="grid grid-rows-6 grid-flow-col min-h-screen">
     <div class="row-span-full col-span-1"></div>
     <div class="row-span-5 col-span-2 border-8 border-blue-700 border-opacity-50">
@@ -19,12 +19,6 @@ import Games from "../components/Games.vue"
 
 export default defineComponent({
   name: 'Board',
-  props: {
-    msg: {
-      type: String,
-      required: true
-    }
-  },
   components: {
     Player,
     Games,
