@@ -21,6 +21,7 @@ export default defineComponent({
       selectable: game.selectable,
       highlights: game.highlights,
       toggleHighlight: game.toggleHighlight,
+      isCurrentGameConfirmed: game.isCurrentGameConfirmed,
     }
   }
 })

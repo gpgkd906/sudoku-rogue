@@ -1,7 +1,8 @@
-import { computed } from 'vue'
-import { state } from "./model";
+import { computed, registerRuntimeCompiler } from 'vue'
+import { state, isCurrentGameConfirmed } from "./model";
 
 export const selectCell = (key: number) => {
+    if (isCurrentGameConfirmed.value) return;
     const select = state.current.matrix[key];
     if (select && select.fixed === false) {
         state.current.selected = select;

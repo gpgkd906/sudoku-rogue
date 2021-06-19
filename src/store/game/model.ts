@@ -82,6 +82,7 @@ const toMatrix = (puzzle: MayBeNumber[], solution: number[]): Cell[] => {
 
 const wrapGameTimer = (state: State): State => {
     setInterval(() => {
+        if (state.current.result.confirmed) return;
         state.current.timer += 1;
         setCurrentGame(state.current);
     }, 1000);
@@ -131,3 +132,4 @@ export const gameTimer = computed(() => {
 export const current    = readonly(state.current);
 export const noChoice   = computed(() => state.noChoice);
 export const gameScore  = computed(() => state.current.score);
+export const isCurrentGameConfirmed = computed(() => state.current.result.confirmed);

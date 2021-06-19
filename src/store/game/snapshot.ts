@@ -30,4 +30,9 @@ export const snapshotThenReset = () => {
     state.current.undoSnapshot = [];
 }
 
+export const clearSnapshot = () => {
+    state.current.snapshot.length = 0;
+    state.current.undoSnapshot.length = 0;
+}
+
 export const snapShotCount = computed(() => state.current.snapshot.length);

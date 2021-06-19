@@ -2,13 +2,13 @@
   <character-card :character="selectedCharacter" />
   <items-controller />
   <div class="grid">
-    <button  @click="startNewGame()"
+    <button  @click="startNewGame()" :disabled="isCurrentGameConfirmed"
       class="inline-flex justify-center px-4 py-2 text-sm font-medium text-red-900 bg-red-100 rounded-md hover:bg-red-200 focus:outline-none"
       >开始新游戏</button>
-    <button  @click="backToLastSnapshot()"
+    <button  @click="backToLastSnapshot()" :disabled="isCurrentGameConfirmed"
       class="inline-flex justify-center px-4 py-2 text-sm font-medium text-green-900 bg-green-100 rounded-md hover:bg-green-200 focus:outline-none"
       >回退上一步</button>
-    <button  @click="cancelBack()"
+    <button  @click="cancelBack()" :disabled="isCurrentGameConfirmed"
       class="inline-flex justify-center px-4 py-2 text-sm font-medium text-purple-900 bg-purple-100 rounded-md hover:bg-purple-200 focus:outline-none"
       >取消回退</button>
   </div>
@@ -37,9 +37,7 @@ export default defineComponent({
       startNewGame: game.startNewGame,
       backToLastSnapshot: game.backToLastSnapshot,
       cancelBack: game.cancelBack,
-      snapShotCount: game.snapShotCount,
-      guessNumber: game.guessNumber,
-      gameTimer: game.gameTimer
+      isCurrentGameConfirmed: game.isCurrentGameConfirmed,
     }
   }
 })

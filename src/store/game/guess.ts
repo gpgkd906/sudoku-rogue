@@ -1,7 +1,8 @@
 import { computed, reactive } from 'vue'
 import { MayBeNumber, SELECTABLE, CLEAR_GUESS } from "./interface"
 import { state, setCurrentGame } from "./model";
-import { snapshotThenReset } from "./snapshot"
+import { snapshotThenReset, clearSnapshot } from "./snapshot"
+import { clearHighlight } from "./hightlight"
 
 export const guessRange = computed(() => {
     if (!state.current.selected) {
@@ -57,6 +58,8 @@ export const confirmGameResult = () => {
     }
     state.current.result.confirmed = true;
     state.current.result.success = result;
+    clearSnapshot();
+    clearHighlight();
 }
 
 export const guessNumber = computed(() => state.current.matrix.filter(i => !i.guess).length);
