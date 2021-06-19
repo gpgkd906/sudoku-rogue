@@ -8,15 +8,15 @@
     </div>
   </div>
   <button  @click="startNewGame()"
-  class="inline-flex justify-center px-4 py-2 text-sm font-medium text-red-200 bg-red-900 rounded-md 
-  disabled:bg-red-100 diabled:text-red-900
+  class="inline-flex justify-center px-4 py-2 text-sm font-medium text-red-400 bg-red-900 rounded-md 
+  disabled:bg-red-200
   focus:outline-none" :disabled="!hasSelectedCharacter"
   >开始新游戏</button>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import Character from "../components/Character.vue"
+import Character from "../components/controllers/Character.vue"
 import unit from "../store/unit";
 import game from "../store/game";
 import router, { Paths } from "../router";
@@ -27,6 +27,7 @@ export default defineComponent({
       Character
   },
   setup: () => {
+    unit.clearCurrentCharacter();
     return { 
       characters: unit.characters,
       hasSelectedCharacter: unit.hasSelectedCharacter,

@@ -1,6 +1,6 @@
 <template>
-<div class="flex justify-between m-6" 
-  :class="isSelectedCharacter(character) ? 'ring ring-pink-600 ring-offset-2': '' "
+<div class="flex justify-between m-6 rounded h-auto" 
+  :class="isSelectedCharacter(character) ? 'ring ring-blue-600 ring-offset-2': '' "
   @click="selectCharacter(character)">
   <div class="flex flex-col h-full max-w-lg mx-auto bg-gradient-to-r from-gray-800 via-blue-500 to-gray-800 rounded-lg">
       <img
@@ -19,7 +19,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import unit from "../store/unit";
+import unit from "../../store/unit";
 
 export default defineComponent({
   name: 'Character',
