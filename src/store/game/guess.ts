@@ -1,26 +1,7 @@
-import { computed } from 'vue'
+import { computed, reactive } from 'vue'
 import { MayBeNumber, SELECTABLE, CLEAR_GUESS } from "./interface"
 import { state, setCurrentGame } from "./model";
 import { snapshotThenReset } from "./snapshot"
-
-export const guess = (guess: MayBeNumber) => {
-    const selected = state.current.selected;
-    if (!selected) {
-        return;
-    }
-    state.current.selected = undefined;
-    // 同一个单元里选择同一个数字不记录任何操作
-    if (selected.guess === guess) {
-        return;
-    }
-    snapshotThenReset();
-    if (typeof guess === 'number') {
-        selected.guess = guess;
-    } else {
-        selected.guess = undefined;
-    }
-    setCurrentGame(state.current);
-}
 
 export const guessRange = computed(() => {
     if (!state.current.selected) {
@@ -46,6 +27,37 @@ export const guessRange = computed(() => {
         state.noChoice = true
     }
     return range;
-})
+});
 
-export const guessNumber = computed(() => state.current.matrix.filter(i => !i.guess).length)
+export const guess = (guess: MayBeNumber) => {
+    const selected = state.current.selected;
+    if (!selected) {
+        return;
+    }
+    state.current.selected = undefined;
+    // 同一个单元里选择同一个数字不记录任何操作
+    if (selected.guess === guess) {
+        return;
+    }
+    snapshotThenReset();
+    if (typeof guess === 'number') {
+        selected.guess = guess;
+    } else {
+        selected.guess = undefined;
+    }
+    setCurrentGame(state.current);
+}
+
+export const confirmGameResult = () => {
+    let result = true;
+    for (const cell of state.current.matrix) {
+        if (cell.answer !== cell.guess) {
+            result = false;
+        }
+    }
+    state.current.result.confirmed = true;
+    state.current.result.success = result;
+}
+
+export const guessNumber = computed(() => state.current.matrix.filter(i => !i.guess).length);
+export const isAllGuessed = computed(() => guessNumber.value === 0);

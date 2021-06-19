@@ -49,6 +49,10 @@ const createGame = (): Game => {
         timer: 0,
         items: [],
         skills: [],
+        result: {
+            confirmed: false,
+            success: false,
+        }
     }
 }
 

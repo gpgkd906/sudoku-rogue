@@ -17,12 +17,19 @@
       <cell :item="item" :index="item.index"/>
     </div>
   </div>
+    <button  @click="confirmGameResult()"
+      class="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-400 bg-blue-900 rounded-md 
+  disabled:bg-blue-200
+  focus:outline-none" :disabled="isAllGuessed"
+      >检查结果</button>
   <guess/>
+  <guess-result />
 </template>
 
 <script lang="ts">
 import { defineComponent, computed } from 'vue'
 import Guess from './Guess.vue'
+import GuessResult from './GuessResult.vue';
 import Cell from './Cell.vue'
 import game from '../store/game'
 
@@ -30,7 +37,8 @@ export default defineComponent({
   name: 'Games',
   components: {
     Cell,
-    Guess
+    Guess,
+    GuessResult
   },
   setup: () => {
     const firstLine  = computed(() => game.current.matrix.slice(0, game.current.size))
@@ -38,6 +46,8 @@ export default defineComponent({
     return { 
       firstLine,
       restLines,
+      confirmGameResult: game.confirmGameResult,
+      isAllGuessed: game.isAllGuessed
     }
   }
 })

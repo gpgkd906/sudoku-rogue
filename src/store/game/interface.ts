@@ -25,6 +25,11 @@ export interface Skill {
     label: string,
 }
 
+export interface Result {
+    confirmed: boolean,
+    success: boolean
+}
+
 export interface Game {
     score: number,
     matrix: Cell[],
@@ -37,6 +42,7 @@ export interface Game {
     timer: number,
     items: Item[],
     skills: Skill[],
+    result: Result
 }
 
 export interface State {
