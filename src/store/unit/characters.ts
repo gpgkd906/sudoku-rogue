@@ -1,4 +1,5 @@
-import { computed, reactive, readonly, ref } from 'vue'
+import { computed, reactive, readonly, toRaw } from 'vue'
+import db from "../../plugins/db"
 
 interface Character {
     code?: string
@@ -6,6 +7,19 @@ interface Character {
     description?: string
 }
 
+const store = db.createInstance({
+    name: "characters"
+});
+
+const CURRENT_CHARACTER = 'currentCharacter';
+
+export const setCurrentCharacter = (character: Character) => {
+    store.setItem(CURRENT_CHARACTER, toRaw(character));
+}
+
+export const clearCurrentCharacter = () => {
+    store.removeItem(CURRENT_CHARACTER);
+}
 
 export const characters = readonly<Character[]>([
     {
@@ -42,10 +56,11 @@ export const characters = readonly<Character[]>([
     },
 ]);
 
-const selected: Character = reactive({});
+const selected: Character = reactive<Character>(await store.getItem(CURRENT_CHARACTER) ?? {});
 
 export const selectCharacter = (character: Character) => {
     Object.assign(selected, character);
+    setCurrentCharacter(selected);
 }
 
 export const selectedCharacter = computed(() => selected);

@@ -1,10 +1,5 @@
 <template>
-  <p>
-    <span> Score : </span><span>{{ player.score }}</span>
-    <span> steps : </span><span>{{ snapShotCount }}</span>
-    <span> rest : </span><span>{{ guessNumber }}</span>
-    <span> timer : </span><span>{{ gameTimer }}</span>
-  </p>
+  <character-card :character="selectedCharacter" />
   <items-controller />
   <div class="grid">
     <button  @click="startNewGame()"
@@ -24,6 +19,7 @@
 import { defineComponent } from 'vue'
 import ItemsController from "./controllers/Items.vue";
 import HighlightController from "./controllers/HightLight.vue"
+import CharacterCard from "./cards/Character.vue";
 import unit from "../store/unit";
 import game from '../store/game'
 
@@ -31,11 +27,13 @@ export default defineComponent({
   name: 'Player',
   components: {
     ItemsController,
-    HighlightController
+    HighlightController,
+    CharacterCard,
   },
   setup: () => {
     return {
       player: unit.player,
+      selectedCharacter: unit.selectedCharacter,
       startNewGame: game.startNewGame,
       backToLastSnapshot: game.backToLastSnapshot,
       cancelBack: game.cancelBack,
