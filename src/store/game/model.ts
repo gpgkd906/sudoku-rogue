@@ -1,4 +1,4 @@
-import { reactive, computed, toRaw } from 'vue'
+import { reactive, computed, toRaw, readonly } from 'vue'
 import { MayBeNumber, Cell, Game, State, Numeric, CURRENT_GAME } from "./interface"
 import { makepuzzle, solvepuzzle, ratepuzzle } from "../../plugins/sudoku.js"
 import db from "../../plugins/db"
@@ -47,6 +47,8 @@ const createGame = (): Game => {
         matrix: toMatrix(puzzle, solution),
         highlights: [],
         timer: 0,
+        items: [],
+        skills: [],
     }
 }
 
@@ -75,7 +77,6 @@ const toMatrix = (puzzle: MayBeNumber[], solution: number[]): Cell[] => {
 }
 
 const wrapGameTimer = (state: State): State => {
-    state = reactive(state);
     setInterval(() => {
         state.current.timer += 1;
         setCurrentGame(state.current);
@@ -103,10 +104,12 @@ export const startNewGame = () => {
     setCurrentGame(state.current);
 }
 
-export const state: State = wrapGameTimer({
-    current: await loadGame(),
-    noChoice: false,
-})
+export const state: State = wrapGameTimer(
+    reactive({
+        current: await loadGame(),
+        noChoice: false,
+    })
+)
 
 
 export const gameTimer = computed(() => {
@@ -114,11 +117,13 @@ export const gameTimer = computed(() => {
     let seconds:Numeric  = timer % 60;
     const minutesTimer = (timer - seconds) / 60;
     let minutes:Numeric  = minutesTimer % 60;
-    let hours:Numeric    = (minutesTimer - minutes) / 24;
+    let hours:Numeric    = (minutesTimer - minutes) / 60;
     seconds = seconds < 10 ? `0${seconds}` : seconds;
     minutes = minutes < 10 ? `0${minutes}` : minutes;
     hours = hours < 10 ? `0${hours}` : hours;
     return `${hours}:${minutes}:${seconds}`;
 });
 
+export const current    = readonly(state.current);
 export const noChoice   = computed(() => state.noChoice);
+export const gameScore  = computed(() => state.current.score);

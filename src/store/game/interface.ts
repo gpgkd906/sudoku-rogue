@@ -16,6 +16,15 @@ export interface Cell {
     square: number,
 }
 
+export interface Item {
+    label: string,
+    count: number,
+}
+
+export interface Skill {
+    label: string,
+}
+
 export interface Game {
     score: number,
     matrix: Cell[],
@@ -26,6 +35,8 @@ export interface Game {
     undoSnapshot: Array<Cell[]>,
     highlights: number[],
     timer: number,
+    items: Item[],
+    skills: Skill[],
 }
 
 export interface State {
