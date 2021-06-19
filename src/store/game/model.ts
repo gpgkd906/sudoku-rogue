@@ -100,7 +100,7 @@ export const setCurrentGame = (game: Game) => {
 };
 
 export const startNewGame = () => {
-    state.current = createGame();
+    Object.assign(state.current, createGame());
     setCurrentGame(state.current);
 }
 
