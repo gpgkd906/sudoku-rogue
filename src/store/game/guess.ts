@@ -57,6 +57,7 @@ export const confirmGameResult = () => {
     calculateTimeScore(state.current);
     calculateItemScore(state.current);
     summaryResultScore(state.current);
+    console.log('confirmGameResult', state.current);
     clearSnapshot();
     clearHighlight();
 }

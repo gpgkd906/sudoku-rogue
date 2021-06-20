@@ -138,4 +138,4 @@ export const gameTimer = computed(() => {
 export const current    = readonly(state.current);
 export const gameScore  = computed(() => state.current.score);
 export const isCurrentGameConfirmed = computed(() => state.current.result.confirmed);
-export const gameResult = readonly(state.current.result);
+export const gameResult = computed(() => state.current.result);

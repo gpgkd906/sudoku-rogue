@@ -1,7 +1,8 @@
 <template>
 <div class="max-w-sm mx-auto">
     <img :src="character.image"/>
-    <span> Score : </span><span>{{ player.point }}</span>
+    <span> 经验值 : </span><span>{{ player.experience }}</span>
+    <span> 等级 : </span><span>{{ player.rank }}</span>
     <span> steps : </span><span>{{ snapShotCount }}</span>
     <span> rest : </span><span>{{ guessNumber }}</span>
     <span> timer : </span><span>{{ gameTimer }}</span>
@@ -23,8 +24,7 @@ export default defineComponent({
   },
   setup: () => {
     return {
-      player: unit.player,
-      selectedCharacter: unit.selectedCharacter,
+      player: unit.selectedCharacter,
       snapShotCount: game.snapShotCount,
       guessNumber: game.guessNumber,
       gameTimer: game.gameTimer

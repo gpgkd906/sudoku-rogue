@@ -32,6 +32,7 @@ import Guess from './Guess.vue'
 import GuessResult from './GuessResult.vue';
 import Cell from './Cell.vue'
 import game from '../store/game'
+import unit from '../store/unit'
 
 export default defineComponent({
   name: 'Games',
@@ -46,7 +47,10 @@ export default defineComponent({
     return { 
       firstLine,
       restLines,
-      confirmGameResult: game.confirmGameResult,
+      confirmGameResult: () => {
+        game.confirmGameResult();
+        unit.gainExperience(game.current.result.score.total);
+      },
       isAllGuessed: game.isAllGuessed
     }
   }
