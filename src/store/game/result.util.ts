@@ -18,17 +18,22 @@ export const calculateDifficultyScore = (difficulty: number):number => {
 export const calculateTimeScore = (game: Game) => {
     const timer = game.timer || 0;
     switch (true) {
+        case timer < 30: game.result.score.time = 10; return;
+        case timer < 60: game.result.score.time = 8; return;
+        case timer < 120: game.result.score.time = 5; return;
+        case timer < 180: game.result.score.time = 4; return;
         case timer < 300: game.result.score.time = 3; return;
         case timer < 600: game.result.score.time = 2.5; return;
         case timer < 900: game.result.score.time = 2; return;
         case timer < 1200: game.result.score.time = 1.5; return;
-        case timer < 1500: game.result.score.time = 1; return;
+        case timer < 1500: game.result.score.time = 1.2; return;
+        case timer < 3600: game.result.score.time = 1; return;
         default: game.result.score.time = 0.5; return;
     }
 }
 
 export const calculateItemScore = (game: Game) => {
-    game.result.score.item = 2;
+    game.result.score.item = 1;
 }
 
 export const summaryResultScore = (game: Game) => {
