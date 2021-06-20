@@ -110,7 +110,6 @@ export const isSelectedCharacter = (character: Character) => {
 export const hasSelectedCharacter = computed(() => !!selected.code);
 
 export const gainExperience = (experience: number) => {
-    console.log('gainExperience', selected.experience, experience);
     selected.experience += experience;
     switch (true) {
         case selected.experience > 200000: selected.rank = 10; break;
