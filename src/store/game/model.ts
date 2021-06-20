@@ -1,6 +1,7 @@
 import { reactive, computed, toRaw, readonly } from 'vue'
 import { MayBeNumber, Cell, Game, State, Numeric, CURRENT_GAME } from "./interface"
 import { makepuzzle, solvepuzzle, ratepuzzle } from "../../plugins/sudoku.js"
+import { calculateDifficultyScore } from "./result.util"
 import db from "../../plugins/db"
 
 
@@ -49,6 +50,16 @@ const createGame = (): Game => {
         timer: 0,
         items: [],
         skills: [],
+        result: {
+            confirmed: false,
+            success: false,
+            score: {
+                difficulty: calculateDifficultyScore(difficulty),
+                time: 1,
+                item: 1,
+                total: 0,
+            }
+        },
     }
 }
 
@@ -78,6 +89,7 @@ const toMatrix = (puzzle: MayBeNumber[], solution: number[]): Cell[] => {
 
 const wrapGameTimer = (state: State): State => {
     setInterval(() => {
+        if (state.current.result.confirmed) return;
         state.current.timer += 1;
         setCurrentGame(state.current);
     }, 1000);
@@ -107,7 +119,6 @@ export const startNewGame = () => {
 export const state: State = wrapGameTimer(
     reactive({
         current: await loadGame(),
-        noChoice: false,
     })
 )
 
@@ -125,5 +136,6 @@ export const gameTimer = computed(() => {
 });
 
 export const current    = readonly(state.current);
-export const noChoice   = computed(() => state.noChoice);
 export const gameScore  = computed(() => state.current.score);
+export const isCurrentGameConfirmed = computed(() => state.current.result.confirmed);
+export const gameResult = readonly(state.current.result);

@@ -1,5 +1,5 @@
 <template>
-  <div :class="bgColor()" 
+  <div :class="bgColor" 
   class="w-full h-full text-xl font-extrabold flex items-center justify-center"
   @click="selectCell"
   >
@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, computed } from 'vue'
 import game from "../store/game"
 
 
@@ -27,12 +27,16 @@ export default defineComponent({
   },
   setup (props) {
     return {
-      bgColor: () => {
+      bgColor: computed(() => {
         let bgColor = '';
-        bgColor = props.item.confirmed ? 'bg-green-200': bgColor;
-        bgColor = props.item.highlight ? 'bg-red-200': bgColor;
+        if (game.current.result.confirmed) {
+          bgColor = props.item.answer === props.item.guess ? 'bg-green-200': 'bg-red-200';
+        } else {
+          bgColor = props.item.confirmed ? 'bg-green-200': bgColor;
+          bgColor = props.item.highlight ? 'bg-red-200': bgColor;
+        }
         return bgColor;
-      },
+      }),
       selectCell: () => game.selectCell(props.index),
     }
   }

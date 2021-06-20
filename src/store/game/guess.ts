@@ -1,7 +1,30 @@
-import { computed } from 'vue'
+import { computed, reactive } from 'vue'
 import { MayBeNumber, SELECTABLE, CLEAR_GUESS } from "./interface"
 import { state, setCurrentGame } from "./model";
-import { snapshotThenReset } from "./snapshot"
+import { snapshotThenReset, clearSnapshot } from "./snapshot"
+import { clearHighlight } from "./hightlight"
+import { calculateTimeScore, calculateItemScore, summaryResultScore } from "./result.util";
+
+export const guessRange = computed(() => {
+    if (!state.current.selected) {
+        return [];
+    }
+    const select = state.current.selected;
+    let included: any[] = [];
+    // 同一行不重复的数字
+    for (const cell of state.current.matrix) {
+        if (cell.row === select.row || cell.col === select.col || cell.square === select.square) {
+            included.push(cell.guess);
+        }
+    }
+    included = included.filter(i => i);
+    let range: (number|string)[] = SELECTABLE.filter(number => !included.includes(number));
+    if (select.guess) {
+        range.push(select.guess);
+    }
+    range = Array.from(new Set(range));
+    return range;
+});
 
 export const guess = (guess: MayBeNumber) => {
     const selected = state.current.selected;
@@ -22,30 +45,21 @@ export const guess = (guess: MayBeNumber) => {
     setCurrentGame(state.current);
 }
 
-export const guessRange = computed(() => {
-    if (!state.current.selected) {
-        return [];
-    }
-    const select = state.current.selected;
-    let included: any[] = [];
-    // 同一行不重复的数字
+export const confirmGameResult = () => {
+    let result = true;
     for (const cell of state.current.matrix) {
-        if (cell.row === select.row || cell.col === select.col || cell.square === select.square) {
-            included.push(cell.guess);
+        if (cell.answer !== cell.guess) {
+            result = false;
         }
     }
-    included = included.filter(i => i);
-    let range: (number|string)[] = SELECTABLE.filter(number => !included.includes(number));
-    if (select.guess) {
-        range.push(select.guess);
-        range.push(CLEAR_GUESS)
-    }
-    range = Array.from(new Set(range));
-    state.noChoice = false;
-    if (range.length === 0) {
-        state.noChoice = true
-    }
-    return range;
-})
+    state.current.result.confirmed = true;
+    state.current.result.success = result;
+    calculateTimeScore(state.current);
+    calculateItemScore(state.current);
+    summaryResultScore(state.current);
+    clearSnapshot();
+    clearHighlight();
+}
 
-export const guessNumber = computed(() => state.current.matrix.filter(i => !i.guess).length)
+export const guessNumber = computed(() => state.current.matrix.filter(i => !i.guess).length);
+export const isAllGuessed = computed(() => guessNumber.value === 0);
