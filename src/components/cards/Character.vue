@@ -1,7 +1,7 @@
 <template>
 <div class="max-w-sm mx-auto">
     <img :src="character.image"/>
-    <span> Score : </span><span>{{ player.score }}</span>
+    <span> Score : </span><span>{{ player.point }}</span>
     <span> steps : </span><span>{{ snapShotCount }}</span>
     <span> rest : </span><span>{{ guessNumber }}</span>
     <span> timer : </span><span>{{ gameTimer }}</span>

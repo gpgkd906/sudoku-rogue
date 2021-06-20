@@ -15,15 +15,22 @@
       >
         {{ number }}
       </button>
-      <button v-show="guessRange.length === 0"></button>
-      <button v-if="noChoice" @click="clearSelect()"
+      <button v-if="isClearable" @click="guess(null)"
+        class="inline-flex justify-center px-4 py-2 text-sm font-medium text-red-900 bg-red-100 rounded-md hover:bg-red-200 focus:outline-none"
+        >清除数字</button>
+      <button v-if="isCloseable" @click="clearSelect()"
+        class="inline-flex justify-center px-4 py-2 text-sm font-medium text-red-900 bg-red-100 rounded-md hover:bg-red-200 focus:outline-none"
+        >返回棋盘</button>
+      <button v-if="isNochoice" @click="clearSelect()"
         class="inline-flex justify-center px-4 py-2 text-sm font-medium text-red-900 bg-red-100 rounded-md hover:bg-red-200 focus:outline-none"
         >没有可以选择的数字</button>
+      <button></button>
     </div>
   </Dialog>
 </template>
 
 <script>
+import { computed } from "vue";
 import Dialog from './utils/Dialog.vue'
 import game from '../store/game'
 
@@ -38,7 +45,20 @@ export default {
       guess: game.guess,
       guessRange: game.guessRange,
       clearSelect: game.clearSelect,
-      noChoice: game.noChoice,
+      selectedCell: game.selectedCell,
+      isNochoice: computed(() => game.selectedCell.value && game.guessRange.value.length === 0),
+      isClearable: computed(() => {
+        if (game.selectedCell.value && game.guessRange.value.length > 0) {
+          return game.guessRange.value.includes(game.selectedCell.value.guess)
+        }
+        return false;
+      }),
+      isCloseable: computed(() => {
+        if (game.selectedCell.value && game.guessRange.value.length > 0) {
+          return !game.guessRange.value.includes(game.selectedCell.value.guess)
+        }
+        return false;
+      }),
     }
   },
 }

@@ -17,24 +17,24 @@ export interface Cell {
 }
 
 export interface Item {
+    id: string,
     label: string,
-    count: number,
+    number: number, // 可使用次数
+    count: number, // 使用次数
 }
 
-export interface Skill {
-    label: string,
+export interface Skill extends Item {
 }
 
 export interface Result {
     confirmed: boolean,
     success: boolean,
     wrongCount?: number,
-    score?: {
+    score: {
         difficulty: number,
-        time?: number,
-        item?: number,
-        event?: number,
-        total?: number,
+        time: number,
+        item: number,
+        total: number,
     }
 }
 
@@ -55,6 +55,5 @@ export interface Game {
 
 export interface State {
     current: Game,
-    noChoice: boolean,
 }
 

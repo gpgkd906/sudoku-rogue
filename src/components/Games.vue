@@ -20,7 +20,7 @@
     <button  @click="confirmGameResult()"
       class="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-400 bg-blue-900 rounded-md 
   disabled:bg-blue-200
-  focus:outline-none" :disabled="isAllGuessed"
+  focus:outline-none" :disabled="!isAllGuessed"
       >检查结果</button>
   <guess/>
   <guess-result />

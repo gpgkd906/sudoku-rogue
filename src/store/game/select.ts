@@ -1,4 +1,4 @@
-import { computed, registerRuntimeCompiler } from 'vue'
+import { computed, readonly } from 'vue'
 import { state, isCurrentGameConfirmed } from "./model";
 
 export const selectCell = (key: number) => {
@@ -16,3 +16,5 @@ export const isSelected = computed(() => {
 export const clearSelect = () => {
     state.current.selected = undefined;
 }
+
+export const selectedCell = computed(() => state.current.selected);

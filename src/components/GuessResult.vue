@@ -3,9 +3,11 @@
     <h1>游戏结算</h1>
     <ul>
       <li>难度奖励: {{ result.score.difficulty }}</li>
-      <li>时间奖励: {{ result.score.time }}</li>
-      <li>道具奖励: {{ result.score.item }}</li>
-      <li>额外奖励: {{ result.score.event }}</li>
+      <li>时间奖励: x {{ result.score.time }} = {{ result.score.difficulty * result.score.time }}</li>
+      <li>道具奖励: x {{ result.score.item }} = {{ result.score.difficulty * result.score.time * result.score.item }}</li>
+      <li>额外奖励: + 0 = {{ result.score.difficulty * result.score.time * result.score.item + 0 }}</li>
+      <li v-if="result.success">成功结算: x 1 = {{ result.score.total }}</li>
+      <li v-if="!result.success">失败结算: x 0 = {{ result.score.total }}</li>
       <li class="border-t-2 border-gray-900">结算: {{ result.score.total }}</li>
     </ul>
     <button  @click="startNewGame()"

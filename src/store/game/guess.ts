@@ -3,6 +3,7 @@ import { MayBeNumber, SELECTABLE, CLEAR_GUESS } from "./interface"
 import { state, setCurrentGame } from "./model";
 import { snapshotThenReset, clearSnapshot } from "./snapshot"
 import { clearHighlight } from "./hightlight"
+import { calculateTimeScore, calculateItemScore, summaryResultScore } from "./result.util";
 
 export const guessRange = computed(() => {
     if (!state.current.selected) {
@@ -20,13 +21,8 @@ export const guessRange = computed(() => {
     let range: (number|string)[] = SELECTABLE.filter(number => !included.includes(number));
     if (select.guess) {
         range.push(select.guess);
-        range.push(CLEAR_GUESS)
     }
     range = Array.from(new Set(range));
-    state.noChoice = false;
-    if (range.length === 0) {
-        state.noChoice = true
-    }
     return range;
 });
 
@@ -58,6 +54,9 @@ export const confirmGameResult = () => {
     }
     state.current.result.confirmed = true;
     state.current.result.success = result;
+    calculateTimeScore(state.current);
+    calculateItemScore(state.current);
+    summaryResultScore(state.current);
     clearSnapshot();
     clearHighlight();
 }
