@@ -74,7 +74,7 @@ const toMatrix = (puzzle: MayBeNumber[], solution: number[]): Cell[] => {
         const col = idx % 9
         matrix.push({
             index: idx,
-            guess: solution[idx],
+            guess: puzzle[idx],
             answer: solution[idx],
             confirmed: solution[idx] === puzzle[idx],
             fixed: solution[idx] === puzzle[idx],
