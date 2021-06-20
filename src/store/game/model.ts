@@ -74,7 +74,7 @@ const toMatrix = (puzzle: MayBeNumber[], solution: number[]): Cell[] => {
         const col = idx % 9
         matrix.push({
             index: idx,
-            guess: puzzle[idx],
+            guess: solution[idx],
             answer: solution[idx],
             confirmed: solution[idx] === puzzle[idx],
             fixed: solution[idx] === puzzle[idx],
@@ -138,4 +138,4 @@ export const gameTimer = computed(() => {
 export const current    = readonly(state.current);
 export const gameScore  = computed(() => state.current.score);
 export const isCurrentGameConfirmed = computed(() => state.current.result.confirmed);
-export const gameResult = readonly(state.current.result);
+export const gameResult = computed(() => state.current.result);
