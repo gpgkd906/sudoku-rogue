@@ -6,6 +6,7 @@ import * as snapshot from "./game/snapshot"
 import * as highlight from "./game/hightlight";
 import * as guess from "./game/guess";
 import * as items from "./game/items";
+import * as event from "./game/event";
 
 export default {
     ...game,
@@ -14,6 +15,7 @@ export default {
     ...highlight,
     ...guess,
     ...items,
+    ...event,
     selectable: SELECTABLE,
     state: readonly(game.state),
 }

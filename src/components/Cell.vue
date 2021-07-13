@@ -3,7 +3,7 @@
   class="w-full h-full text-xl font-extrabold flex items-center justify-center"
   @click="selectCell"
   >
-  <span :class="item.highlight ? 'text-red-500': ''">{{item.guess}}</span>
+  <span :class="textColor">{{item.guess}}</span>
   <small>[{{ item.answer }}]</small>
   </div>
 </template>
@@ -29,13 +29,31 @@ export default defineComponent({
     return {
       bgColor: computed(() => {
         let bgColor = '';
+        const item = props.item;
         if (game.current.result.confirmed) {
-          bgColor = props.item.answer === props.item.guess ? 'bg-green-200': 'bg-red-200';
+          bgColor = item.answer === item.guess ? 'bg-green-200': 'bg-red-200';
         } else {
-          bgColor = props.item.confirmed ? 'bg-green-200': bgColor;
-          bgColor = props.item.highlight ? 'bg-red-200': bgColor;
+          if (item.confirmed) {
+            switch (true) {
+              case item.highlight: bgColor ='bg-yellow-200'; break;
+              case item.fixed: bgColor ='bg-green-200'; break;
+              default: bgColor ='bg-red-200'; break;
+            }
+          } 
         }
         return bgColor;
+      }),
+      textColor: computed(() => {
+        let textColor = '';
+        const item = props.item;
+        console.log(item.confirmed && !item.fixed);
+        if (item.highlight) {
+          textColor = 'text-red-500';
+        }
+        if (item.confirmed && !item.fixed) {
+          textColor = 'text-red-500';
+        }
+        return textColor;
       }),
       selectCell: () => game.selectCell(props.index),
     }

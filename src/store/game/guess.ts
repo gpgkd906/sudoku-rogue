@@ -1,9 +1,11 @@
-import { computed, reactive } from 'vue'
+import { computed, reactive, toRaw } from 'vue'
 import { MayBeNumber, SELECTABLE, CLEAR_GUESS } from "./interface"
 import { state, setCurrentGame } from "./model";
+import { clearSelect } from "./select";
 import { snapshotThenReset, clearSnapshot } from "./snapshot"
 import { clearHighlight } from "./hightlight"
 import { calculateTimeScore, calculateItemScore, summaryResultScore } from "./result.util";
+import { triggerEvent, disableEvent } from "./event";
 
 export const guessRange = computed(() => {
     if (!state.current.selected) {
@@ -41,8 +43,26 @@ export const guess = (guess: MayBeNumber) => {
         selected.guess = guess;
     } else {
         selected.guess = undefined;
+        selected.confirmed = false;
     }
     setCurrentGame(state.current);
+}
+
+export const confirmCell = () => {
+    const selected = state.current.selected;
+    if (!selected) {
+        return;
+    }
+    if (selected.guess === selected.answer) {
+        selected.confirmed = true;
+        selected.fixed = true;
+        triggerEvent(selected);
+    } else {
+        selected.confirmed = true;
+        selected.fixed = false;
+        disableEvent(selected);
+    }
+    clearSelect();
 }
 
 export const confirmGameResult = () => {

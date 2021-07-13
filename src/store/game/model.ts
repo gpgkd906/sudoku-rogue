@@ -1,9 +1,9 @@
 import { reactive, computed, toRaw, readonly } from 'vue'
-import { MayBeNumber, Cell, Game, State, Numeric, CURRENT_GAME } from "./interface"
+import { MayBeNumber, Cell, Game, State, Numeric, CURRENT_GAME, Item } from "./interface"
 import { makepuzzle, solvepuzzle, ratepuzzle } from "../../plugins/sudoku.js"
 import { calculateDifficultyScore } from "./result.util"
+import { createEvent } from "./event"
 import db from "../../plugins/db"
-
 
 const store = db.createInstance({
     name: "game"
@@ -45,7 +45,7 @@ const createGame = (): Game => {
         selected: undefined,
         snapshot: [],
         undoSnapshot: [],
-        matrix: toMatrix(puzzle, solution),
+        matrix: toMatrix(puzzle, solution, difficulty),
         highlights: [],
         timer: 0,
         items: [],
@@ -63,25 +63,28 @@ const createGame = (): Game => {
     }
 }
 
-const toMatrix = (puzzle: MayBeNumber[], solution: number[]): Cell[] => {
+const toMatrix = (puzzle: MayBeNumber[], solution: number[], difficulty: number): Cell[] => {
     const matrix: Cell[] = [];
     // 現時点で生成されたsudokuを[1-9]配列に直す
     puzzle = puzzle.map(i => typeof i === 'number' ? i + 1: i);
     solution = solution.map(i => i + 1);
+    const items: Item[] = [];
     for (let index in puzzle) {
         const idx = Number(index)
         const row = Math.floor(idx / 9)
         const col = idx % 9
+        const isFixed =  solution[idx] === puzzle[idx]
         matrix.push({
             index: idx,
             guess: puzzle[idx],
             answer: solution[idx],
-            confirmed: solution[idx] === puzzle[idx],
-            fixed: solution[idx] === puzzle[idx],
+            confirmed: isFixed,
+            fixed: isFixed,
             highlight: false,
             row,
             col,
             square: decideSquare(row, col),
+            event: createEvent(difficulty, items)
         });
     }
     return matrix;
@@ -108,7 +111,9 @@ const loadGame = async () => {
 }
 
 export const setCurrentGame = (game: Game) => {
-    store.setItem(CURRENT_GAME, toRaw(game));
+    const gameRaw = toRaw(game);
+    console.log(gameRaw);
+    store.setItem(CURRENT_GAME, gameRaw);
 };
 
 export const startNewGame = () => {

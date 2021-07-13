@@ -2,12 +2,9 @@
   <character-card :character="selectedCharacter" />
   <items-controller />
   <div class="grid">
-    <button  @click="startNewGame()" :disabled="isCurrentGameConfirmed"
-      class="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 rounded-md hover:bg-blue-200 focus:outline-none"
-      >开始新游戏</button>
     <button  @click="backTop()" :disabled="isCurrentGameConfirmed"
       class="inline-flex justify-center px-4 py-2 text-sm font-medium text-red-900 bg-red-100 rounded-md hover:bg-red-200 focus:outline-none"
-      >返回游戏入口</button>
+      >放弃游戏</button>
     <button  @click="backToLastSnapshot()" :disabled="isCurrentGameConfirmed"
       class="inline-flex justify-center px-4 py-2 text-sm font-medium text-green-900 bg-green-100 rounded-md hover:bg-green-200 focus:outline-none"
       >回退上一步</button>

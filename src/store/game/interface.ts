@@ -14,6 +14,13 @@ export interface Cell {
     row: number,
     col: number,
     square: number,
+    event?: CellEvent,
+}
+
+export interface CellEvent {
+    name: string,
+    isTriggered: boolean,
+    stepLimit: number,
 }
 
 export interface Item {

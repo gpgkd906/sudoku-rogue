@@ -6,6 +6,9 @@
       </p>
     </div>
     <div class="mt-4">
+      <button v-if="isClearable" @click="guess(null)"
+        class="inline-flex justify-center px-4 py-2 text-sm font-medium text-red-900 bg-red-100 rounded-md hover:bg-red-200 focus:outline-none"
+        >清除数字</button>
       <button
         v-for="number in guessRange" :key="number"
         type="button"
@@ -15,9 +18,9 @@
       >
         {{ number }}
       </button>
-      <button v-if="isClearable" @click="guess(null)"
+      <button v-if="isClearable" @click="confirmCell()"
         class="inline-flex justify-center px-4 py-2 text-sm font-medium text-red-900 bg-red-100 rounded-md hover:bg-red-200 focus:outline-none"
-        >清除数字</button>
+        >确认数字</button>
       <button v-if="isCloseable" @click="clearSelect()"
         class="inline-flex justify-center px-4 py-2 text-sm font-medium text-red-900 bg-red-100 rounded-md hover:bg-red-200 focus:outline-none"
         >返回棋盘</button>
@@ -43,6 +46,7 @@ export default {
     return {
       isOpen: game.isSelected,
       guess: game.guess,
+      confirmCell: game.confirmCell,
       guessRange: game.guessRange,
       clearSelect: game.clearSelect,
       selectedCell: game.selectedCell,

@@ -1,9 +1,9 @@
-import { computed } from 'vue'
+import { computed, toRaw } from 'vue'
 import { state, setCurrentGame } from "./model";
 
 const takeSnapshot = <T>(matrix: T[]): T[] => {
     return matrix.map(item => {
-        return {...item};
+        return {...toRaw(item)};
     })
 }
 
