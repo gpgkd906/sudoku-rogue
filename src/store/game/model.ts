@@ -1,7 +1,7 @@
 import { reactive, computed, toRaw, readonly } from 'vue'
 import { MayBeNumber, Cell, Game, State, Numeric, CURRENT_GAME, Item } from "./interface"
 import { makepuzzle, solvepuzzle, ratepuzzle } from "../../plugins/sudoku.js"
-import { calculateDifficultyScore } from "./result.util"
+import { calculateDifficultyScore } from "./calculator"
 import { createEvent } from "./event"
 import db from "../../plugins/db"
 
@@ -45,6 +45,7 @@ const createGame = (): Game => {
         selected: undefined,
         snapshot: [],
         undoSnapshot: [],
+        internalStep: 0,
         matrix: toMatrix(puzzle, solution, difficulty),
         highlights: [],
         timer: 0,
@@ -57,6 +58,7 @@ const createGame = (): Game => {
                 difficulty: calculateDifficultyScore(difficulty),
                 time: 1,
                 item: 1,
+                guess: 0,
                 total: 0,
             }
         },
@@ -111,9 +113,7 @@ const loadGame = async () => {
 }
 
 export const setCurrentGame = (game: Game) => {
-    const gameRaw = toRaw(game);
-    console.log(gameRaw);
-    store.setItem(CURRENT_GAME, gameRaw);
+    store.setItem(CURRENT_GAME, toRaw(game));
 };
 
 export const startNewGame = () => {

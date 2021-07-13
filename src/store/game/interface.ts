@@ -17,9 +17,18 @@ export interface Cell {
     event?: CellEvent,
 }
 
+export enum EventType {
+    Item,
+    Skill,
+    // Score,
+    // Time,
+}
+
 export interface CellEvent {
     name: string,
+    type: EventType,
     isTriggered: boolean,
+    isDisabled: boolean,
     stepLimit: number,
 }
 
@@ -41,6 +50,7 @@ export interface Result {
         difficulty: number,
         time: number,
         item: number,
+        guess: number,
         total: number,
     }
 }
@@ -50,6 +60,7 @@ export interface Game {
     matrix: Cell[],
     difficulty: number,
     size: number,
+    internalStep: number,
     selected: Cell | void,
     snapshot: Array<Cell[]>,
     undoSnapshot: Array<Cell[]>,

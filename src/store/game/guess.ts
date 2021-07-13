@@ -4,7 +4,7 @@ import { state, setCurrentGame } from "./model";
 import { clearSelect } from "./select";
 import { snapshotThenReset, clearSnapshot } from "./snapshot"
 import { clearHighlight } from "./hightlight"
-import { calculateTimeScore, calculateItemScore, summaryResultScore } from "./result.util";
+import { calculateTimeScore, calculateItemScore, summaryResultScore, calculateConfirmCell } from "./calculator";
 import { triggerEvent, disableEvent } from "./event";
 
 export const guessRange = computed(() => {
@@ -45,6 +45,7 @@ export const guess = (guess: MayBeNumber) => {
         selected.guess = undefined;
         selected.confirmed = false;
     }
+    state.current.internalStep += 1;
     setCurrentGame(state.current);
 }
 
@@ -56,12 +57,13 @@ export const confirmCell = () => {
     if (selected.guess === selected.answer) {
         selected.confirmed = true;
         selected.fixed = true;
-        triggerEvent(selected);
+        triggerEvent(state.current, selected);
     } else {
         selected.confirmed = true;
         selected.fixed = false;
         disableEvent(selected);
     }
+    calculateConfirmCell(state.current, selected);
     clearSelect();
 }
 

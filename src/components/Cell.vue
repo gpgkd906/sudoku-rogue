@@ -5,6 +5,7 @@
   >
   <span :class="textColor">{{item.guess}}</span>
   <small>[{{ item.answer }}]</small>
+  <small v-if="eventLimit > 0">e: {{ eventLimit }}</small>
   </div>
 </template>
 
@@ -26,10 +27,10 @@ export default defineComponent({
     }
   },
   setup (props) {
+    const item = props.item;
     return {
       bgColor: computed(() => {
         let bgColor = '';
-        const item = props.item;
         if (game.current.result.confirmed) {
           bgColor = item.answer === item.guess ? 'bg-green-200': 'bg-red-200';
         } else {
@@ -45,8 +46,6 @@ export default defineComponent({
       }),
       textColor: computed(() => {
         let textColor = '';
-        const item = props.item;
-        console.log(item.confirmed && !item.fixed);
         if (item.highlight) {
           textColor = 'text-red-500';
         }
@@ -56,6 +55,12 @@ export default defineComponent({
         return textColor;
       }),
       selectCell: () => game.selectCell(props.index),
+      eventLimit: computed(() => {
+        if (item.event) {
+          return item.event.stepLimit - game.current.internalStep;
+        }
+        return 0;
+      })
     }
   }
 })

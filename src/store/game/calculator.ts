@@ -1,6 +1,17 @@
-import { Game } from "./interface";
+import { Cell, Game } from "./interface";
 
 export const DEFAULT_ITEM_SCORE = 100;
+
+export const calculateConfirmCell = (game: Game, selected: Cell) => {
+    if (!selected.confirmed) {
+        return;
+    }
+    if (selected.fixed) {
+        game.result.score.guess += 100;
+    } else {
+        game.result.score.guess += -100;
+    }
+}
 
 export const calculateDifficultyScore = (difficulty: number):number => {
     difficulty = Math.floor(difficulty);
