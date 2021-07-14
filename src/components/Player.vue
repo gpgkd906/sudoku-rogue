@@ -35,7 +35,6 @@ export default defineComponent({
     return {
       player: unit.player,
       selectedCharacter: unit.selectedCharacter,
-      startNewGame: game.startNewGame,
       backToLastSnapshot: game.backToLastSnapshot,
       cancelBack: game.cancelBack,
       isCurrentGameConfirmed: game.isCurrentGameConfirmed,

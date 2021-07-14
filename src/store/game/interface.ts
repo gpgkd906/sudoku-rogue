@@ -29,7 +29,6 @@ export interface CellEvent {
     type: EventType,
     isTriggered: boolean,
     isDisabled: boolean,
-    stepLimit: number,
 }
 
 export interface Item {

@@ -32,6 +32,7 @@ export default defineComponent({
       characters: unit.characters,
       hasSelectedCharacter: unit.hasSelectedCharacter,
       startNewGame: async () => {
+        game.reInitGame();
         game.startNewGame();
         router.replace(Paths.board);
       }

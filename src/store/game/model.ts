@@ -2,6 +2,7 @@ import { reactive, computed, toRaw, readonly } from 'vue'
 import { MayBeNumber, Cell, Game, State, Numeric, CURRENT_GAME, Item } from "./interface"
 import { makepuzzle, solvepuzzle, ratepuzzle } from "../../plugins/sudoku.js"
 import { calculateDifficultyScore } from "./calculator"
+import { reInitItems } from "./items";
 import { createEvent } from "./event"
 import db from "../../plugins/db"
 
@@ -76,6 +77,7 @@ const toMatrix = (puzzle: MayBeNumber[], solution: number[], difficulty: number)
         const row = Math.floor(idx / 9)
         const col = idx % 9
         const isFixed =  solution[idx] === puzzle[idx]
+        const eventProperty = isFixed ? {} : { event: createEvent(difficulty, items) };
         matrix.push({
             index: idx,
             guess: puzzle[idx],
@@ -86,7 +88,7 @@ const toMatrix = (puzzle: MayBeNumber[], solution: number[], difficulty: number)
             row,
             col,
             square: decideSquare(row, col),
-            event: createEvent(difficulty, items)
+            ...eventProperty
         });
     }
     return matrix;
@@ -139,6 +141,10 @@ export const gameTimer = computed(() => {
     hours = hours < 10 ? `0${hours}` : hours;
     return `${hours}:${minutes}:${seconds}`;
 });
+
+export const reInitGame = () => {
+    reInitItems();
+}
 
 export const current    = readonly(state.current);
 export const gameScore  = computed(() => state.current.score);

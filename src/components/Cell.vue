@@ -5,7 +5,6 @@
   >
   <span :class="textColor">{{item.guess}}</span>
   <small>[{{ item.answer }}]</small>
-  <small v-if="eventLimit > 0">e: {{ eventLimit }}</small>
   </div>
 </template>
 
@@ -55,12 +54,6 @@ export default defineComponent({
         return textColor;
       }),
       selectCell: () => game.selectCell(props.index),
-      eventLimit: computed(() => {
-        if (item.event) {
-          return item.event.stepLimit - game.current.internalStep;
-        }
-        return 0;
-      })
     }
   }
 })
